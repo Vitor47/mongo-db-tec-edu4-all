@@ -13,7 +13,7 @@ const schema = new mongoose.Schema({
   status: Boolean,
 }, { collection: 'student' });
 
-//cria uma model chamada student com esse schema passado
+
 const Student = mongoose.model('student', schema);
 
 export default Student;

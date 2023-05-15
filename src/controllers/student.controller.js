@@ -11,13 +11,11 @@ import studentSchema from "../utils/schemaValidation.js";
 
 const studentRoutes = Router();
 
-// Define a rota para listar todos os usuários
-studentRoutes.get("/", async (req, res) => {
+studentRoutes.get("/", authenticationMiddleware, async (req, res) => {
   const students = await listStudent();
   return res.status(200).json(students);
 });
 
-// Define a rota para buscar um usuário por ID
 studentRoutes.get("/:id", authenticationMiddleware, async (req, res) => {
   const { id } = req.params;
 
@@ -25,7 +23,6 @@ studentRoutes.get("/:id", authenticationMiddleware, async (req, res) => {
   return res.status(200).json(student);
 });
 
-// Define a rota para criar um novo usuário
 studentRoutes.post("/", async (req, res) => {
   const { error } = await studentSchema.validate(req.body);
 
@@ -38,8 +35,7 @@ studentRoutes.post("/", async (req, res) => {
   return res.status(200).json(studentCreated);
 });
 
-// Define a rota para atualizar um usuário existente por ID
-studentRoutes.put("/:id", async (req, res) => {
+studentRoutes.put("/:id", authenticationMiddleware, async (req, res) => {
   const { id } = req.params;
 
   const { error } = await studentSchema.validate(req.body);
@@ -52,11 +48,15 @@ studentRoutes.put("/:id", async (req, res) => {
   return res.status(200).json(studentUpdated);
 });
 
-// Define a rota para excluir um usuário existente por ID
-studentRoutes.delete("/:id", async (req, res) => {
+studentRoutes.delete("/:id", authenticationMiddleware, async (req, res) => {
   const { id } = req.params;
   const studentDeleted = await deleteStudent(id);
   return res.status(200).json(studentDeleted);
 });
+
+studentRoutes.post('/login', async (req, res) => {
+  const token = await authentication(req.body);
+  res.status(200).json(token);
+})
 
 export default studentRoutes;

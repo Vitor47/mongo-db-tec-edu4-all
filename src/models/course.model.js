@@ -9,16 +9,16 @@ const schema = new mongoose.Schema(
     name: String,
     descricao: Text,
     carga_horaria: Date,
-    avaliation: String,
+    avaliation: Number,
     value: Decimal128,
     logo: String,
     status: Boolean,
-    teacher: { type: mongoose.Types.ObjectId, ref: "teacher" },
+    teacher_responsible: { type: mongoose.Types.ObjectId, ref: "teacher" },
   },
   { collection: "course" }
 );
 
-//cria uma model chamada teacher com esse schema passado
+
 const Course = mongoose.model("course", schema);
 
 export default Course;

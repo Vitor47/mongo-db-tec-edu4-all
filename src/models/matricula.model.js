@@ -13,7 +13,6 @@ const schema = new mongoose.Schema(
   { collection: "matricula" }
 );
 
-//cria uma model chamada teacher com esse schema passado
 const Matricula = mongoose.model("matricula", schema);
 
 export default Matricula;

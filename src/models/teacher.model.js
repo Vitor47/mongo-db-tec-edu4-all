@@ -11,10 +11,11 @@ const schema = new mongoose.Schema({
   expertise: String,
   git_hub: String,
   linkedin: String,
+  password: String,
   status: Boolean,
 }, { collection: 'teacher' });
 
-//cria uma model chamada teacher com esse schema passado
+
 const Teacher = mongoose.model('teacher', schema);
 
 export default Teacher;
