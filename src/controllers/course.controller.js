@@ -4,10 +4,10 @@ import {
   createCourse,
   updateCourse,
   deleteCourse,
-} from "../services/Course.service.js";
+} from "../services/course.service.js";
 import authenticationMiddleware from "../middlewares/auth.middleware.js";
 
-import courseSchema from "../utils/schemaValidation.js";
+import {courseSchema} from "../utils/schemaValidation.js";
 
 const courseRoutes = Router();
 

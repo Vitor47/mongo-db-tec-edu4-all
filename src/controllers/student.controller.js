@@ -4,10 +4,11 @@ import {
   createStudent,
   updateStudent,
   deleteStudent,
+  authentication,
 } from "../services/student.service.js";
 import authenticationMiddleware from "../middlewares/auth.middleware.js";
 
-import studentSchema from "../utils/schemaValidation.js";
+import {studentSchema} from "../utils/schemaValidation.js";
 
 const studentRoutes = Router();
 

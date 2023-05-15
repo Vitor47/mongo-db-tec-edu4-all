@@ -4,14 +4,16 @@ import {
   createTeacher,
   updateTeacher,
   deleteTeacher,
+  authentication,
 } from "../services/teacher.service.js";
 import authenticationMiddleware from "../middlewares/auth.middleware.js";
 
-import teacherSchema from "../utils/schemaValidation.js";
+import {teacherSchema} from "../utils/schemaValidation.js";
 
 const teacherRoutes = Router();
 
 teacherRoutes.get("/", authenticationMiddleware, async (req, res) => {
+  isTeacher = res.locals.teacher
   const teachers = await listTeacher();
   return res.status(200).json(teachers);
 });

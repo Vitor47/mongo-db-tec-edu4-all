@@ -45,8 +45,6 @@ const authentication = async ({ email, password }) => {
   const teacher = await Teacher.findOne({ email });
 
   const comparePassword = bcrypt.compareSync(password, teacher.password);
-  console.log(password, teacher.password);
-  console.log(comparePassword);
 
   if (!teacher || !comparePassword) {
     throw { status: 401, message: "Professor ou senha inválido" };

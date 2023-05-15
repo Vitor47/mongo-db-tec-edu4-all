@@ -7,7 +7,7 @@ import {
 } from "../services/matricula.service.js";
 import authenticationMiddleware from "../middlewares/auth.middleware.js";
 
-import matriculaSchema from "../utils/schemaValidation.js";
+import {matriculaSchema} from "../utils/schemaValidation.js";
 
 const matriculaRoutes = Router();
 

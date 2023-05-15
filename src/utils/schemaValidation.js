@@ -1,54 +1,57 @@
-const Joi = require('joi').extend(require('@joi/date'));
+import Joi from 'joi';
+import JoiDate from '@joi/date';
 
-const userSchema = Joi.object({
-    name: Joi.string().required().max(50),
-    cpf: Joi.string().regex(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/).required(),
-    email: Joi.string().email().required().max(50),
-    password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9@]{3,30}$")).max(8),
+const JoiExtended = Joi.extend(JoiDate);
+
+const userSchema = JoiExtended.object({
+    name: JoiExtended.string().required().max(50),
+    cpf: JoiExtended.string().regex(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/).required(),
+    email: JoiExtended.string().email().required().max(50),
+    password: JoiExtended.string().pattern(new RegExp("^[a-zA-Z0-9@]{3,30}$")).max(8),
 });
 
 
-const studentSchema = Joi.object({
-    name: Joi.string().required().max(50),
-    image_profile: Joi.link().required().max(50),
-    email: Joi.string().email().required().max(50),
-    cpf: Joi.string().regex(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/).required(),
-    telephone: Joi.string().regex(/^\d{2}-\d{4,5}-\d{4}$/).required(),
-    password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9@]{3,30}$")).max(8),
-    status: Joi.boolean().required(),
+const studentSchema = JoiExtended.object({
+    name: JoiExtended.string().required().max(50),
+    image_profile: JoiExtended.string().required().max(50),
+    email: JoiExtended.string().email().required().max(50),
+    cpf: JoiExtended.string().regex(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/).required(),
+    telephone: JoiExtended.string().regex(/^\d{2}-\d{4,5}-\d{4}$/).required(),
+    password: JoiExtended.string().pattern(new RegExp("^[a-zA-Z0-9@]{3,30}$")).max(8),
+    status: JoiExtended.boolean().required(),
 });
 
 
-const teacherSchema = Joi.object({
-    name: Joi.string().required().max(50),
-    image_profile: Joi.link().required().max(50),
-    email: Joi.string().email().required().max(50),
-    biografia: Joi.string().required().max(50),
-    expertise: Joi.string().required().max(50),
-    git_hub: Joi.string().required().max(50),
-    linkedin: Joi.string().required().max(50),
-    password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9@]{3,30}$")).max(8),
-    status: Joi.boolean().required(),
+const teacherSchema = JoiExtended.object({
+    name: JoiExtended.string().required().max(50),
+    image_profile: JoiExtended.string().required().max(50),
+    email: JoiExtended.string().email().required().max(50),
+    biografia: JoiExtended.string().required().max(50),
+    expertise: JoiExtended.string().required().max(50),
+    git_hub: JoiExtended.string().required().max(50),
+    linkedin: JoiExtended.string().required().max(50),
+    password: JoiExtended.string().pattern(new RegExp("^[a-zA-Z0-9@]{3,30}$")).max(8),
+    status: JoiExtended.boolean().required(),
 });
 
 
-const courseSchema = Joi.object({
-    name: Joi.string().required().max(50),
-    descricao: Joi.string().required(),
-    carga_horaria: Joi.date().format('DD/MM/YYYY').utc().required(),
-    avaliation: Joi.number().required(),
-    value: Joi.number().required().precision(2),
-    logo: Joi.link().required().max(50),
-    status: Joi.boolean().required(),
-    teacher_responsible: Joi.number().required(),
+const courseSchema = JoiExtended.object({
+    name: JoiExtended.string().required().max(50),
+    descricao: JoiExtended.string().required(),
+    carga_horaria: JoiExtended.date().format('DD/MM/YYYY').utc().required(),
+    avaliation: JoiExtended.number().required(),
+    value: JoiExtended.number().required().precision(2),
+    logo: JoiExtended.string().required().max(50),
+    status: JoiExtended.boolean().required(),
+    teacher_responsible: JoiExtended.number().required(),
 });
 
 
-const matriculaSchema = Joi.object({
-    student: Joi.number().required(),
-    course: Joi.number().required(),
-    data_matricula: Joi.date().format('DD/MM/YYYY').utc().max('now').required(),
-    status: Joi.boolean().required(),
+const matriculaSchema = JoiExtended.object({
+    student: JoiExtended.number().required(),
+    course: JoiExtended.number().required(),
+    data_matricula: JoiExtended.date().format('DD/MM/YYYY').utc().max('now').required(),
+    status: JoiExtended.boolean().required(),
 });
 
 

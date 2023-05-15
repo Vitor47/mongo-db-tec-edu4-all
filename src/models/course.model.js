@@ -7,7 +7,7 @@ const schema = new mongoose.Schema(
   {
     id: Number,
     name: String,
-    descricao: Text,
+    descricao: String,
     carga_horaria: Date,
     avaliation: Number,
     value: Decimal128,
