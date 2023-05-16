@@ -7,6 +7,7 @@ import {
   authentication,
 } from "../services/teacher.service.js";
 import authenticationMiddleware from "../middlewares/auth.middleware.js";
+import { upload } from "../middlewares/upload.middleware.js";
 
 import {teacherSchema} from "../utils/schemaValidation.js";
 
@@ -24,7 +25,7 @@ teacherRoutes.get("/:id", authenticationMiddleware, async (req, res) => {
   return res.status(200).json(teacher);
 });
 
-teacherRoutes.post("/", authenticationMiddleware, async (req, res) => {
+teacherRoutes.post("/", authenticationMiddleware, upload.single('imagem'), async (req, res) => {
   const { error } = await teacherSchema.validate(req.body);
 
   if (error) {

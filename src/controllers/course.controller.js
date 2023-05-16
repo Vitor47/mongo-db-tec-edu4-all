@@ -4,6 +4,7 @@ import {
   createCourse,
   updateCourse,
   deleteCourse,
+  listInfosCourse,
 } from "../services/course.service.js";
 import authenticationMiddleware from "../middlewares/auth.middleware.js";
 
@@ -23,6 +24,23 @@ courseRoutes.get("/:id", authenticationMiddleware, async (req, res) => {
   return res.status(200).json(course);
 });
 
+
+courseRoutes.get("infos-curso/", async (req, res) => {
+  const { nome } = req.query;
+
+  try {    
+    const course = await listInfosCourse(nome);
+    if (!course) {
+      throw { status: 404, message: "Curso não encontrado" };
+    }
+
+    res.status(200).json(course);
+  } catch (error) {
+    res.status(error.status || 500).json({ message: error.message });
+  }
+});
+
+
 courseRoutes.post("/", authenticationMiddleware, async (req, res) => {
   const { error } = await courseSchema.validate(req.body);
 
@@ -30,7 +48,7 @@ courseRoutes.post("/", authenticationMiddleware, async (req, res) => {
     throw { status: 401, message: error.message };
   }
 
-  const courseCreated = await createCourse(req.body);
+  const courseCreated = await createCourse(req.body, res.locals.payload.isProfessor);
 
   return res.status(200).json(courseCreated);
 });
@@ -44,7 +62,7 @@ courseRoutes.put("/:id", authenticationMiddleware, async (req, res) => {
     throw { status: 401, message: error.message };
   }
 
-  const courseUpdated = await updateCourse(id, req.body);
+  const courseUpdated = await updateCourse(id, req.body, res.locals.payload.isProfessor);
   return res.status(200).json(courseUpdated);
 });
 

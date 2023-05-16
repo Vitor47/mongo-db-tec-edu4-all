@@ -3,6 +3,14 @@ import Student from "../models/student.model.js";
 import { generateJWTToken } from "../utils/jwt.js";
 
 const createStudent = async (dados) => {
+  const { cpf, name, email } = dados;
+
+  const existingStudent = await Student.findOne({ $or: [{ cpf }, { name }, { email }] });
+
+  if (existingStudent) {
+    throw { status: 400, message: "Já existe um estudante com esses dados." };
+  }
+
   dados.password = bcrypt.hashSync(dados.password, 8);
   const student = new Student(dados);
   const result = await student.save();
@@ -15,6 +23,19 @@ const listStudent = async (id) => {
 };
 
 const updateStudent = async (id, dados) => {
+  const { cpf, name, email } = dados;
+
+  const existingStudent = await Student.findOne({
+    $and: [
+      { _id: { $ne: id } },
+      { $or: [{ cpf }, { name }, { email }] }
+    ]
+  });
+
+  if (existingStudent) {
+    throw { status: 400, message: "Já existe um estudante com esses dados." };
+  }
+
   dados.password = bcrypt.hashSync(dados.password, 8);
   const student = await Student.findByIdAndUpdate(id, dados, { new: true });
   return student;

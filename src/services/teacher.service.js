@@ -2,12 +2,22 @@ import bcrypt from "bcrypt";
 import Teacher from "../models/teacher.model.js";
 import { generateJWTToken } from "../utils/jwt.js";
 
-const createTeacher = async (dados, isProfessor) => {
+const createTeacher = async (dados, isProfessor, imagePath) => {
   if (!isProfessor) {
     throw { status: 401, message: "Apenas professores podem cadastrar professores." };
   }
 
+  const { name, email } = dados;
+
+  const existingStudent = await Teacher.findOne({ $or: [{ name }, { email }] });
+
+  if (existingStudent) {
+    throw { status: 400, message: "Já existe um professor com esses dados." };
+  }
+
   dados.password = bcrypt.hashSync(dados.password, 8);
+  dados.imagem_perfil = imagePath;
+
   const teacher = new Teacher(dados);
   const result = await teacher.save();
   return result;
@@ -21,6 +31,19 @@ const listTeacher = async (id) => {
 const updateTeacher = async (id, dados, isProfessor) => {
   if (!isProfessor) {
     throw { status: 401, message: "Apenas professores podem editar professores." };
+  }
+
+  const { name, email } = dados;
+
+  const existingStudent = await Student.findOne({
+    $and: [
+      { _id: { $ne: id } },
+      { $or: [{ name }, { email }] }
+    ]
+  });
+
+  if (existingStudent) {
+    throw { status: 400, message: "Já existe um professor com esses dados." };
   }
 
   dados.password = bcrypt.hashSync(dados.password, 8);
