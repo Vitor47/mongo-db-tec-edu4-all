@@ -3,7 +3,7 @@ import Teacher from "../models/teacher.model.js";
 import { generateJWTToken } from "../utils/jwt.js";
 
 const createTeacher = async (dados, isProfessor) => {
-  if (isProfessor) {
+  if (!isProfessor) {
     throw { status: 401, message: "Apenas professores podem cadastrar professores." };
   }
 
@@ -19,7 +19,7 @@ const listTeacher = async (id) => {
 };
 
 const updateTeacher = async (id, dados, isProfessor) => {
-  if (isProfessor) {
+  if (!isProfessor) {
     throw { status: 401, message: "Apenas professores podem editar professores." };
   }
 
@@ -29,7 +29,7 @@ const updateTeacher = async (id, dados, isProfessor) => {
 };
 
 const deleteTeacher = async (id, isProfessor) => {
-  if (isProfessor) {
+  if (!isProfessor) {
     throw { status: 401, message: "Apenas professores podem remover professores." };
   }
 
@@ -53,7 +53,7 @@ const authentication = async ({ email, password }) => {
   const { _id, name } = teacher;
 
   // Gerar o token
-  const token = generateJWTToken({ _id, name, email });
+  const token = generateJWTToken({ _id, name, email, isProfessor: true });
   return { token };
 };
 

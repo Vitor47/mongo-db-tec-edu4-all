@@ -10,10 +10,6 @@ const authenticationMiddleware = async (req, res, next) => {
 
     res.locals.payload = payload;
 
-    // Capturando o ID do usuário da sessão
-    const userId = payload.userId;
-    console.log("ID do usuário da sessão:", userId);
-
     next();
 }
 

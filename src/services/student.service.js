@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt";
 import Student from "../models/student.model.js";
 import { generateJWTToken } from "../utils/jwt.js";
-import 'dotenv/config';
 
 const createStudent = async (dados) => {
   dados.password = bcrypt.hashSync(dados.password, 8);
@@ -31,9 +30,6 @@ const authentication = async ({ email, password }) => {
     throw { status: 401, message: "Campos faltantes." };
   }
 
-  console.log(email);
-  console.log(password);
-
   const student = await Student.findOne({ email });
 
   const comparePassword = bcrypt.compareSync(password, student.password);
@@ -42,14 +38,10 @@ const authentication = async ({ email, password }) => {
     throw { status: 401, message: "Estudante ou senha inválido" };
   }
 
-  const secretKey = process.env.SECRET_KEY;
-
-  console.log(secretKey);
   const { _id, name } = student;
 
   // Gerar o token
-  const token = generateJWTToken({ _id, name, email }, secretKey);
-
+  const token = generateJWTToken({ _id, name, email, isProfessor: false });
   return { token };
 };
 

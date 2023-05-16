@@ -13,7 +13,6 @@ import {teacherSchema} from "../utils/schemaValidation.js";
 const teacherRoutes = Router();
 
 teacherRoutes.get("/", authenticationMiddleware, async (req, res) => {
-  isTeacher = res.locals.teacher
   const teachers = await listTeacher();
   return res.status(200).json(teachers);
 });
@@ -32,7 +31,7 @@ teacherRoutes.post("/", authenticationMiddleware, async (req, res) => {
     throw { status: 401, message: error.message };
   }
 
-  const teacherCreated = await createTeacher(req.body);
+  const teacherCreated = await createTeacher(req.body, res.locals.payload.isProfessor);
 
   return res.status(200).json(teacherCreated);
 });
@@ -46,13 +45,13 @@ teacherRoutes.put("/:id", authenticationMiddleware, async (req, res) => {
     throw { status: 401, message: error.message };
   }
 
-  const teacherUpdated = await updateTeacher(id, req.body);
+  const teacherUpdated = await updateTeacher(id, req.body, res.locals.payload.isProfessor);
   return res.status(200).json(teacherUpdated);
 });
 
 teacherRoutes.delete("/:id", authenticationMiddleware, async (req, res) => {
   const { id } = req.params;
-  const teacherDeleted = await deleteTeacher(id);
+  const teacherDeleted = await deleteTeacher(id, res.locals.payload.isProfessor);
   return res.status(200).json(teacherDeleted);
 });
 
