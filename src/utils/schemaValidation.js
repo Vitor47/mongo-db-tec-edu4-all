@@ -24,7 +24,7 @@ const studentSchema = JoiExtended.object({
 
 const teacherSchema = JoiExtended.object({
     name: JoiExtended.string().required().max(50),
-    image_profile: JoiExtended.string().required().max(50),
+    image_profile: JoiExtended.string().max(50),
     email: JoiExtended.string().email().required().max(50),
     biografia: JoiExtended.string().required().max(50),
     expertise: JoiExtended.string().required().max(50),

@@ -18,7 +18,13 @@ const createStudent = async (dados) => {
 };
 
 const listStudent = async (id) => {
-  const student = await Student.findById(id).select("-password");
+  if (id){
+    const student = await Student.findById(id).select("-password");
+    return student;
+  }
+
+  const student = await Student.find().select("-password");
+  
   return student;
 };
 

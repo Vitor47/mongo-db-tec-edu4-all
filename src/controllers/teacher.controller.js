@@ -25,7 +25,7 @@ teacherRoutes.get("/:id", authenticationMiddleware, async (req, res) => {
   return res.status(200).json(teacher);
 });
 
-teacherRoutes.post("/", authenticationMiddleware, upload.single('imagem'), async (req, res) => {
+teacherRoutes.post("/", authenticationMiddleware, upload.single('image_profile'), async (req, res) => {
   const { error } = await teacherSchema.validate(req.body);
 
   if (error) {
@@ -37,7 +37,7 @@ teacherRoutes.post("/", authenticationMiddleware, upload.single('imagem'), async
   return res.status(200).json(teacherCreated);
 });
 
-teacherRoutes.put("/:id", authenticationMiddleware, async (req, res) => {
+teacherRoutes.put("/:id", authenticationMiddleware, upload.single('image_profile'), async (req, res) => {
   const { id } = req.params;
 
   const { error } = await teacherSchema.validate(req.body);

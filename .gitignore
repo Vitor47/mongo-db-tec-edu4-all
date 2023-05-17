@@ -1,3 +1,4 @@
 dbdata6
 node_modules
 .env
+uploads/*

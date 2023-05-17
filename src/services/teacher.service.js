@@ -9,9 +9,9 @@ const createTeacher = async (dados, isProfessor, imagePath) => {
 
   const { name, email } = dados;
 
-  const existingStudent = await Teacher.findOne({ $or: [{ name }, { email }] });
+  const existingTeacher = await Teacher.findOne({ $or: [{ name }, { email }] });
 
-  if (existingStudent) {
+  if (existingTeacher) {
     throw { status: 400, message: "Já existe um professor com esses dados." };
   }
 
@@ -24,29 +24,38 @@ const createTeacher = async (dados, isProfessor, imagePath) => {
 };
 
 const listTeacher = async (id) => {
-  const teacher = await Teacher.findById(id).select("-password");
+  if (id){
+    const teacher = await Teacher.findById(id).select("-password");
+    return teacher;
+  }
+
+  const teacher = await Teacher.find().select("-password");
+
   return teacher;
+  
 };
 
-const updateTeacher = async (id, dados, isProfessor) => {
+const updateTeacher = async (id, dados, isProfessor, imagePath) => {
   if (!isProfessor) {
     throw { status: 401, message: "Apenas professores podem editar professores." };
   }
 
   const { name, email } = dados;
 
-  const existingStudent = await Student.findOne({
+  const existingTeacher = await Teacher.findOne({
     $and: [
       { _id: { $ne: id } },
       { $or: [{ name }, { email }] }
     ]
   });
 
-  if (existingStudent) {
+  if (existingTeacher) {
     throw { status: 400, message: "Já existe um professor com esses dados." };
   }
 
   dados.password = bcrypt.hashSync(dados.password, 8);
+  dados.imagem_perfil = imagePath;
+
   const teacher = await Teacher.findByIdAndUpdate(id, dados, { new: true });
   return teacher;
 };
